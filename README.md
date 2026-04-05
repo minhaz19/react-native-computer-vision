@@ -1,50 +1,112 @@
-# Welcome to your Expo app 👋
+# React Native Computer Vision
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobile computer-vision demo app built with Expo + React Native.
 
-## Get started
+It includes on-device AI demos powered by `react-native-executorch`, plus a real-time camera pipeline using `react-native-vision-camera`.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- Real-time Vision Camera screen with model/task switching
+- Image demos for:
+  - Object Detection
+  - OCR
+  - OCR Vertical
+- Vision camera task variants:
+  - Classification
+  - Object Detection (SSDLite / RF-DETR / YOLO26N)
+  - Segmentation (DeepLab / FCN / LRASPP / Selfie)
+  - Instance Segmentation
+  - OCR
+  - Style Transfer
 
-2. Start the app
+## Tech Stack
 
-   ```bash
-   npx expo start
-   ```
+- Expo SDK 54
+- React Native 0.81.5
+- Expo Router (file-based navigation)
+- React Native Vision Camera
+- React Native Worklets
+- React Native ExecuTorch
 
-In the output, you'll find options to open the app in a
+## Prerequisites
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js LTS
+- Yarn 1.x
+- Xcode + CocoaPods (for iOS)
+- Android Studio + SDK (for Android)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Install
 
 ```bash
-npm run reset-project
+yarn install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Run
 
-## Learn more
+### iOS (recommended for this project)
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+yarn ios
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Android
 
-## Join the community
+```bash
+yarn android
+```
 
-Join our community of developers creating universal apps.
+### Metro / Dev server
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+yarn start
+```
+
+## Important Notes
+
+- This app uses native modules (`react-native-executorch`, `react-native-vision-camera`, `react-native-nitro-modules`), so use a **development build**.
+- **Do not use Expo Go** for full functionality.
+- Camera permission is required (configured via `NSCameraUsageDescription` in [app.json](app.json)).
+
+## Project Structure
+
+- [app](app) – routes/screens
+- [app/vision_camera/index.tsx](app/vision_camera/index.tsx) – real-time camera + model switching UI
+- [components/vision_camera/tasks](components/vision_camera/tasks) – per-task camera processing components
+- [assets](assets) – model files (`.pte`) and app assets
+
+## Scripts
+
+- `yarn start` – start Expo dev server
+- `yarn ios` – run iOS dev build
+- `yarn android` – run Android dev build
+- `yarn web` – run web target
+- `yarn lint` – lint project
+
+## Troubleshooting
+
+### iOS build fails after dependency changes
+
+```bash
+cd ios && pod install
+```
+
+Then rerun:
+
+```bash
+yarn ios
+```
+
+### VisionCamera / Worklets C++ errors
+
+Make sure `react-native-worklets` is on a compatible version (`0.8.1` in this project) and reinstall pods.
+
+### Watchman recrawl warning
+
+```bash
+watchman watch-del '/Users/minhazhe/Documents/react-native-computer-vision'
+watchman watch-project '/Users/minhazhe/Documents/react-native-computer-vision'
+```
+
+## License
+
+Private project.
