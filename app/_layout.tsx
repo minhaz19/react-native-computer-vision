@@ -1,24 +1,165 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Drawer } from 'expo-router/drawer';
+import { initExecutorch } from 'react-native-executorch';
+import { ExpoResourceFetcher } from 'react-native-executorch-expo-resource-fetcher';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import ColorPalette from '../colors';
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import {
+  DrawerContentComponentProps,
+  DrawerContentScrollView,
+  DrawerItemList,
+} from '@react-navigation/drawer';
+import { GeneratingContext } from '../context';
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+initExecutorch({
+  resourceFetcher: ExpoResourceFetcher,
+});
 
+interface CustomDrawerProps extends DrawerContentComponentProps {
+  isGenerating: boolean;
+}
+
+function CustomDrawerContent(props: CustomDrawerProps) {
+  const { isGenerating, ...otherProps } = props;
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <DrawerContentScrollView {...otherProps}>
+      {!isGenerating ? (
+        <DrawerItemList {...otherProps} />
+      ) : (
+        <View style={styles.centerContent}>
+          <Text style={styles.mainText}>Model is generating...</Text>
+          <Text style={styles.subText}>Interrupt before switching model</Text>
+        </View>
+      )}
+    </DrawerContentScrollView>
   );
 }
+
+export default function _layout() {
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  return (
+    <GeneratingContext
+      value={{
+        setGlobalGenerating: (newState: boolean) => {
+          setIsGenerating(newState);
+        },
+      }}
+    >
+      <Drawer
+        drawerContent={(props) => (
+          <CustomDrawerContent {...props} isGenerating={isGenerating} />
+        )}
+        screenOptions={{
+          drawerActiveTintColor: ColorPalette.primary,
+          drawerInactiveTintColor: '#888',
+          headerTintColor: ColorPalette.primary,
+          headerTitleStyle: { color: ColorPalette.primary },
+        }}
+      >
+        <Drawer.Screen
+          name="index"
+          options={{
+            drawerLabel: () => null,
+            title: 'Main Menu',
+            drawerItemStyle: { display: 'none' },
+          }}
+        />
+        <Drawer.Screen
+          name="vision_camera/index"
+          options={{
+            drawerLabel: 'Vision Camera',
+            title: 'Vision Camera',
+            headerShown: false,
+            headerTitleStyle: { color: ColorPalette.primary },
+          }}
+        />
+        {/* <Drawer.Screen
+          name="classification/index"
+          options={{
+            drawerLabel: 'Classification',
+            title: 'Classification',
+            headerTitleStyle: { color: ColorPalette.primary },
+          }}
+        />
+        <Drawer.Screen
+          name="semantic_segmentation/index"
+          options={{
+            drawerLabel: 'Semantic Segmentation',
+            title: 'Semantic Segmentation',
+            headerTitleStyle: { color: ColorPalette.primary },
+          }}
+        />
+        <Drawer.Screen
+          name="instance_segmentation/index"
+          options={{
+            drawerLabel: 'Instance Segmentation',
+            title: 'Instance Segmentation',
+            headerTitleStyle: { color: ColorPalette.primary },
+          }}
+        /> */}
+        <Drawer.Screen
+          name="object_detection/index"
+          options={{
+            drawerLabel: 'Object Detection',
+            title: 'Object Detection',
+            headerTitleStyle: { color: ColorPalette.primary },
+          }}
+        />
+        <Drawer.Screen
+          name="ocr/index"
+          options={{
+            drawerLabel: 'OCR',
+            title: 'OCR',
+            headerTitleStyle: { color: ColorPalette.primary },
+          }}
+        />
+        <Drawer.Screen
+          name="ocr_vertical/index"
+          options={{
+            drawerLabel: 'OCR Vertical',
+            title: 'Vertical OCR',
+            headerTitleStyle: { color: ColorPalette.primary },
+          }}
+        />
+        {/* <Drawer.Screen
+          name="style_transfer/index"
+          options={{
+            drawerLabel: 'Style Transfer',
+            title: 'Style Transfer',
+            headerTitleStyle: { color: ColorPalette.primary },
+          }}
+        />
+        <Drawer.Screen
+          name="text_to_image/index"
+          options={{
+            drawerLabel: 'Image Generation',
+            title: 'Image Generation',
+            headerTitleStyle: { color: ColorPalette.primary },
+          }}
+        /> */}
+      </Drawer>
+    </GeneratingContext>
+  );
+}
+
+const styles = StyleSheet.create({
+  centerContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  mainText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: ColorPalette.primary,
+  },
+  subText: {
+    fontSize: 14,
+    color: ColorPalette.strongPrimary,
+  },
+});

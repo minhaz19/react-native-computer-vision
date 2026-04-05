@@ -9,7 +9,12 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.minhaz19.reactnativecomputervision",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app needs camera access for real-time computer vision tasks."
+      },
+      "appleTeamId": "X42TQC7VMR"
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +24,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.minhaz19.reactnativecomputervision"
     },
     "web": {
       "output": "static",
