@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-vision-camera/android/src/main/java/com/margelo/nitro/camera/hybrids/instances/HybridPhoto.kt b/node_modules/react-native-vision-camera/android/src/main/java/com/margelo/nitro/camera/hybrids/instances/HybridPhoto.kt
+index 2a1cb87..8cd3ab6 100644
+--- a/node_modules/react-native-vision-camera/android/src/main/java/com/margelo/nitro/camera/hybrids/instances/HybridPhoto.kt
++++ b/node_modules/react-native-vision-camera/android/src/main/java/com/margelo/nitro/camera/hybrids/instances/HybridPhoto.kt
+@@ -27,7 +27,7 @@ import com.margelo.nitro.core.Promise
+ import com.margelo.nitro.image.HybridImage
+ import com.margelo.nitro.image.HybridImageSpec
+ import com.margelo.nitro.image.ImageFormat
+-import com.margelo.nitro.image.compressInMemory
++import com.margelo.nitro.image.extensions.compressInMemory
+ import kotlinx.coroutines.CoroutineScope
+ import kotlinx.coroutines.Dispatchers
+ import java.io.File

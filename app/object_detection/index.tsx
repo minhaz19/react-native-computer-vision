@@ -90,9 +90,6 @@ export default function ObjectDetectionScreen() {
     );
   }
 
-  console.log(JSON.stringify(imageDimensions, null, 4))
-  console.log("results", JSON.stringify(results, null, 4))
-
   return (
     <ScreenWrapper>
       <ErrorBanner message={error} onDismiss={() => setError(null)} />

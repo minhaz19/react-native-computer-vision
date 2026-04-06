@@ -1,0 +1,19 @@
+diff --git a/node_modules/react-native-executorch/android/build.gradle b/node_modules/react-native-executorch/android/build.gradle
+index 5b1cfd2..b364e6a 100644
+--- a/node_modules/react-native-executorch/android/build.gradle
++++ b/node_modules/react-native-executorch/android/build.gradle
+@@ -29,8 +29,12 @@ def reactNativeArchitectures() {
+   if(!value) {
+     return defaultArchitectures
+   }
+-  def architectures = value.split(",")
+-  return architectures.findAll { it in defaultArchitectures }
++  def architectures = value.split(",").collect { it.trim() }
++  def supportedArchitectures = architectures.findAll { it in defaultArchitectures }
++  if (supportedArchitectures.isEmpty()) {
++    return defaultArchitectures
++  }
++  return supportedArchitectures
+ }
+ 
+ apply plugin: "com.android.library"

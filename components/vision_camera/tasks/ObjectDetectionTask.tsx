@@ -123,7 +123,6 @@ export default function ObjectDetectionTask({
           const result = detRof(frame, isFrontCamera, {
             detectionThreshold: 0.5,
           });
-          console.log(JSON.stringify(result, null, 4), 'result')
           // Sensor frames are landscape-native, so width/height are swapped
           // relative to portrait screen orientation.
           const screenW = frame.height;
